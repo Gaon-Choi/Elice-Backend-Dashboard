@@ -1,20 +1,28 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, func
+from sqlalchemy import Column, Sequence, Integer, String, DateTime, Boolean, ForeignKey, Text, func
 Base = declarative_base()
 
+'''
+USER_ID_SEQ = Sequence('user_id_seq')
+BOARD_ID_SEQ = Sequence('board_id_seq')
+ARTICLE_ID_SEQ = Sequence('article_id_seq')
+'''
 
 class User(Base):
     __tablename__ = 'users'
     # user name
-    uid = Column(Integer, Sequence('user_id_seq'), primary_key = True)
+    uid = Column('id', Integer, primary_key = True)
+    
     # user's name
-    fullname = Column(String(30))
+    fullname = Column('name', String(30))
+    
     # user's email
-    email = Column(String(50))
+    email = Column('email', String(50))
+    
     # user's password -> should be private!
-    password = Column(String(20))
-    
-    
+    password = Column('password', String(20))
+
+
     def __init__(self, fullname, email, password):
         self.fullname = fullname
         self.email = email
@@ -25,21 +33,30 @@ class User(Base):
         return "<User('%s', '%s', '%s')>" % (self.fullname, self.email, self.password)
 
 
-class Board:
+class Board(Base):
     __tablename__ = 'boards'
     # board id
-    bid = Column(Integer, Sequence('board_id_seq'), primary_key = True)
+    bid = Column('id', Integer, primary_key = True)
     # board name
-    name = Column(String(30))
+    name = Column('name', String(30))
 
 
-class Article:
+class Article(Base):
     __tablename__ = 'articles'
     # article id
-    aid = Column(Integer, Sequence('article_id_seq'), primary_key = True)
+    aid = Column('id', Integer, primary_key = True)
+    
     # board id (foreign key)
-    bid = Column(Integer, ForeignKey('boards.bid'))
+    bid = Column('board_id', Integer, ForeignKey('boards.id'))
+    
     # article contents
-    texts = Column(Text)
-    # article date (create or edit)
-    date = Column(DateTime, default = func.now())
+    texts = Column('contents', Text)
+    
+    # article date (create)
+    date = Column('date', DateTime, default = func.now())
+    
+    # article date (recently edit)
+    edate = Column('edate', DateTime, default = func.now())
+    
+    # status -> this system should be "vengeful"
+    status = Column('status', Boolean, default = False)
