@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 import redis
 import os
 import models
+import query
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'd2707fea9778e085491e2dbbc73ff30e'
@@ -21,7 +23,6 @@ def home():
 @app.route('/user', defaults={'path': ''})
 @app.route('/user/<path:path>')
 def user(path):
-    print(params['name'])
     params = request.get_json()
     if path == 'signup':
         name = params['name']
@@ -34,16 +35,15 @@ def user(path):
         return login(email, password)
     elif path == 'logout':
         return logout()
-    return ('heoo', 200)
+    
+    # invalid path
+    return {
+        "result": None,
+        "status": 400
+    }
+    }
 
-def signup(name: str, email: str, password: str):
-    pass
 
-def login(email: str, password: str):
-    pass
-
-def logout():
-    pass
 
 if __name__ == '__main__':
     models.Base.metadata.create_all(bind=engine)
