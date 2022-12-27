@@ -41,6 +41,36 @@ def user(path):
         "result": None,
         "status": 400
     }
+
+
+@app.route('/boardlist', methods=['GET'])
+def boardlist():
+    return query.board_list()
+
+
+@app.route('/board/<board_name>', methods=['PUT', 'PATCH', 'DELETE', 'GET'])
+def board(board_name):
+    # create new board
+    if (request.method == 'PUT'):
+        return create_board(board_name)
+    
+    # rename board with given name
+    elif (request.method == 'PATCH'):
+        return rename_board(board_name)
+    
+    # delete a board with given name
+    elif (request.method == 'DELETE'):
+        return remove_board(board_name)
+    
+    # print articles from a board with given name (paginated)
+    elif (request.method == 'GET'):
+        page = request.args['page']
+        return 'TBD'
+    
+    # invalid path
+    return {
+        "result": None,
+        "status": 400
     }
 
 
