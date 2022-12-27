@@ -16,9 +16,35 @@ branch_labels = None
 depends_on = None
 
 
-def upgrade() -> None:
-    pass
+def upgrade():
+    # Table "users"
+    op.create_table(
+        'users',
+        sa.Column('id', sa.Integer(), primary_key = True),
+        sa.Column('name', String(30)),
+        sa.Column('email', String(50)),
+        sa.Column('password', String(20))
+    )
 
+    # Table "boards"
+    op.create_table(
+        'boards',
+        sa.Column('id', Integer, primary_key = True),
+        sa.Column('name', String(30))
+    )
+    
+    # Table "articles"
+    op.create_table(
+        'articles',
+        sa.Column('id', Integer, primary_key = True),
+        sa.Column('board_id', Integer, ForeignKey('boards.id')),
+        sa.Column('contents', Text),
+        sa.Column('date', DateTime, default = func.now()),
+        sa.Column('edate', DateTime, default = func.now()),
+        sa.Column('status', Boolean, default = False)
+    )
 
 def downgrade() -> None:
-    pass
+    op.drop_table('users')
+    op.drop_table('boards')
+    op.drop_table('articles')
