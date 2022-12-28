@@ -47,7 +47,7 @@ def user(path):
 
 @app.route('/boardlist', methods=['GET'])
 def boardlist():
-    return query.board_list()
+    page = request.args.get('page', type=int, default=1)
     return query.board_list(page)
 
 
@@ -68,9 +68,9 @@ def board(board_name):
     elif (request.method == 'DELETE'):
         return query.remove_board(board_name)
     
-    # print articles from a board with given name (paginated)
+    # read articles from a board with given name (paginated)
     elif (request.method == 'GET'):
-        page = request.args['page']
+        page = request.args.get('page', type=int, default=1)
         return query.read_articles(board_name)
     
     # invalid path
