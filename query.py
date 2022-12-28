@@ -28,7 +28,30 @@ def check_exist_article(article_id: int):
 #########################
 
 def signup(name: str, email: str, password: str):
-    pass
+    # check email format validity
+    if (isValidEmail(email) is False):
+        return {
+            "result": 'invalid email address',
+            "status": 400
+        }
+    
+    # check whether email address is duplicated
+    [duplicate_check] = check_duplicate_email(email).fetchone()
+    if (duplicate_check > 0):
+        return {
+            "result": 'duplicate email detected',
+            "status": 400
+        }
+    
+    user = User(fullname = name, email = email, password = password)
+    session.add(user)
+    session.commit()
+    
+    return {
+        "result": None,
+        "status": 201   # 201 Created
+    }
+
 
 def login(email: str, password: str):
     pass
