@@ -66,6 +66,18 @@ def login(email: str, password: str):
 def logout():
     pass
 
-def board_list():
-    pass
 
+def board_list(page: int):
+    query = select(Board.bid, Board.name).select_from(Board).order_by(Board.bid).offset(page).limit(RECORDS_PER_PAGE)
+    result = session.execute(query).fetchall()
+
+    def tuple_to_dict(tuple_: tuple) -> dict:
+        a, b = tuple_
+        return {"bid": a, "name": b}
+    
+    result = list(map(tuple_to_dict, result))
+    
+    return {
+        "result": result,
+        "status": 200
+    }
