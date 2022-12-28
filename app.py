@@ -21,20 +21,22 @@ def home():
 
 
 @app.route('/user', defaults={'path': ''})
-@app.route('/user/<path:path>')
+@app.route('/user/<path:path>', methods = ['PUT', 'GET', 'PATCH'])
 def user(path):
     params = request.get_json()
     if path == 'signup':
         name = params['name']
         email = params['email']
         password = params['password']
-        return signup(name, email, password)
+        return query.signup(name, email, password)
+    
     elif path == 'login':
         email = params['name']
         password = params['password']
-        return login(email, password)
+        return query.login(email, password)
+    
     elif path == 'logout':
-        return logout()
+        return query.logout()
     
     # invalid path
     return {
@@ -46,26 +48,30 @@ def user(path):
 @app.route('/boardlist', methods=['GET'])
 def boardlist():
     return query.board_list()
+    return query.board_list(page)
 
 
 @app.route('/board/<board_name>', methods=['PUT', 'PATCH', 'DELETE', 'GET'])
 def board(board_name):
+    params = request.get_json()
+    
     # create new board
     if (request.method == 'PUT'):
-        return create_board(board_name)
+        return query.create_board(board_name)
     
     # rename board with given name
     elif (request.method == 'PATCH'):
-        return rename_board(board_name)
+        target_name = params['target_name']
+        return query.rename_board(board_name, target_name)
     
     # delete a board with given name
     elif (request.method == 'DELETE'):
-        return remove_board(board_name)
+        return query.remove_board(board_name)
     
     # print articles from a board with given name (paginated)
     elif (request.method == 'GET'):
         page = request.args['page']
-        return 'TBD'
+        return query.read_articles(board_name)
     
     # invalid path
     return {
