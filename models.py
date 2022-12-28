@@ -32,13 +32,16 @@ class User(Base):
     def __repr__(self):
         return "<User('%s', '%s', '%s')>" % (self.fullname, self.email, self.password)
 
-
 class Board(Base):
     __tablename__ = 'boards'
     # board id
     bid = Column('id', Integer, primary_key = True)
+    
     # board name
     name = Column('name', String(30))
+
+    def __init__(self, name):
+        self.name = name
 
 
 class Article(Base):
@@ -60,3 +63,10 @@ class Article(Base):
     
     # status -> this system should be "vengeful"
     status = Column('status', Boolean, default = False)
+    
+    def __init__(self, bid, texts, date, edate, status):
+        self.bid = bid
+        self.texts = texts
+        self.date = date
+        self.edate = edate
+        self.status = status
