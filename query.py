@@ -54,7 +54,14 @@ def signup(name: str, email: str, password: str):
 
 
 def login(email: str, password: str):
+    # check email format validity
+    if (isValidEmail(email) is False):
+        return {
+            "result": None,
+            "status": 400
+        }
     pass
+
 
 def logout():
     pass
