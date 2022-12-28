@@ -1,6 +1,7 @@
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Sequence, Integer, String, DateTime, Boolean, ForeignKey, Text, func
 Base = declarative_base()
+import datetime
 
 '''
 USER_ID_SEQ = Sequence('user_id_seq')
@@ -52,21 +53,36 @@ class Article(Base):
     # board id (foreign key)
     bid = Column('board_id', Integer, ForeignKey('boards.id'))
     
+    # article title
+    title = Column('title', String(100))
+    
     # article contents
     texts = Column('contents', Text)
     
     # article date (create)
-    date = Column('date', DateTime, default = func.now())
+    date = Column('date', DateTime(timezone=True), server_default=func.now())
     
     # article date (recently edit)
-    edate = Column('edate', DateTime, default = func.now())
+    edate = Column('edate', DateTime(timezone=True), server_default = func.now(), onupdate=func.now())
     
     # status -> this system should be "vengeful"
     status = Column('status', Boolean, default = False)
     
-    def __init__(self, bid, texts, date, edate, status):
+    def __init__(self, bid, title, texts):
         self.bid = bid
+        self.title = title
         self.texts = texts
-        self.date = date
-        self.edate = edate
-        self.status = status
+        self.date = datetime.datetime.utcnow()
+        self.edate = datetime.datetime.utcnow()
+        self.status = False
+    
+    def __dict__(self):
+        return {
+            "aid": self.aid,
+            "bid": self.bid,
+            "title": self.title,
+            "texts": self.texts,
+            "date": self.date,
+            "edate": self.edate,
+            "status": self.status
+        }
