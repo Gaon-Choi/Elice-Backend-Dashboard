@@ -259,3 +259,22 @@ def delete_article(article_id: int):
         "status": 200
     }
 
+
+def delete_article_s(article_id: int):
+    # check whether article exists with given article id
+    exist_aid = check_exist_article(article_id).fetchone()
+    if (exist_aid is None):
+        return {
+            "result": 'no article detected with given id',
+            "status": 400
+        }
+    
+    query = delete(Article).where(Article.aid == article_id)
+    result = session.execute(query)
+    session.commit()
+    
+    return {
+        "result": None,
+        "status": 200
+    }
+

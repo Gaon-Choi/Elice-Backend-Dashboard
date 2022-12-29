@@ -101,6 +101,10 @@ def article_contents(article_id: int):
         return query.delete_article(article_id)
 
 
+@app.route('/article/delete/<article_id>', methods = ['DELETE'])
+def article_delete(article_id: int):
+    return query.delete_article_s(article_id)
+
 if __name__ == '__main__':
     models.Base.metadata.create_all(bind=engine)
     app.run(debug=True)
