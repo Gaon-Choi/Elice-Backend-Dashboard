@@ -29,7 +29,7 @@ def check_exist_board(board_name: str):
 
 def check_exist_article(article_id: int):
     return sql_session.execute(
-        select(Article.bid).select_from(Article).filter_by(aid = article_id)
+        select(Article.bid, Article.writer).select_from(Article).filter_by(aid = article_id)
     )
 
 def organize_articles(articles: list):
@@ -287,6 +287,7 @@ def create_article(title: str, contents: str, bname: str):
         board_id = exist_bid,
         title = title,
         contents = contents,
+        writer = session['userId'],
         status = False
     )
     sql_session.execute(query)
@@ -307,17 +308,18 @@ def edit_article(article_id: int, title: str, contents: str):
         }
     
     # whether the article exists with given article id
-    [exist_aid] = check_exist_article(article_id).fetchone()
+    exist_aid, writer_id = check_exist_article(article_id).fetchone()
     if (exist_aid is None):
         return {
             "result": 'no article detected with given id',
             "status": 400
         }
     
-    if (title is None and contents is None):
+    # check user's authority for editing article
+    if (session['userId'] != writer_id):    # unauthorized
         return {
-            "result": "Bad Request",
-            "status": 400
+            "result": 'Unauthorized User.',
+            "status": 200
         }
     
     # edit title
@@ -340,7 +342,7 @@ def edit_article(article_id: int, title: str, contents: str):
 
 def read_article(article_id: int):
     # check whether article exists with given article id
-    exist_aid = check_exist_article(article_id).fetchone()
+    exist_aid, writer_id = check_exist_article(article_id).fetchone()
     if (exist_aid is None):
         return {
             "result": 'no article detected with given id',
@@ -369,13 +371,20 @@ def delete_article(article_id: int):
         }
         
     # check whether article exists with given article id
-    exist_aid = check_exist_article(article_id).fetchone()
+    exist_aid, writer_id = check_exist_article(article_id).fetchone()
     if (exist_aid is None):
         return {
             "result": 'no article detected with given id',
             "status": 400
         }
     
+    # check user's authority for editing article
+    if (session['userId'] != writer_id):    # unauthorized
+        return {
+            "result": 'Unauthorized User.',
+            "status": 200
+        }
+        
     # mark as "deleted"
     query = update(Article).where(Article.aid == article_id).values(status = True)
     result = sql_session.execute(query)
