@@ -79,7 +79,7 @@ def board(board_name):
     }
 
 
-@app.route('/article', methods=['POST', 'PATCH'])
+@app.route('/article', methods=['POST', 'PUT'])
 def article():
     params = request.get_json()
     title = params['title']
@@ -88,7 +88,7 @@ def article():
         bname = params['board_name']
         return query.create_article(title, contents, bname)
     
-    elif (request.method == 'PATCH'):
+    elif (request.method == 'PUT'):
         article_id = params['article_id']
         return query.edit_article(article_id, title, contents)
     
