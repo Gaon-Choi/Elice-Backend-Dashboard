@@ -88,14 +88,50 @@ def signup(name: str, email: str, password: str):
 
 
 def login(email: str, password: str):
+    # check if already logged-in
+    if 'userId' in session:
+        return {
+            "result": 'A user already logged in.',
+            "status": 200
+        }
+    
     # check email format validity
     if (isValidEmail(email) is False):
         return {
-            "result": None,
+            "result": 'email address has invalid form.',
             "status": 400
         }
-    pass
+    
+    query = select(User.uid, User.email, User.password).select_from(User).where(User.email == email)
+    result = sql_session.execute(query).fetchone()
+    
+    if (result is None):
+        # account with given email does not exist
+        return {
+            "result": 'User does not exist with given e-mail address',
+            "status": 200
+        }
+    
+    # account exists
+    [user_id, user_email, user_password] = result
 
+    if (user_password != password):
+        return {
+            "result": "Wrong password!",
+            "status": 200
+        }
+    
+    session['userId'] = user_id
+    session['userEmail'] = user_email
+    
+    return {
+        "result": {
+            "userId": user_id,
+            "userEmail": user_email
+        },
+        "status": 200
+    }
+    
 
 def logout():
     pass
