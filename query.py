@@ -140,3 +140,22 @@ def rename_board(board_name: str, target_name: str):
         "status": 200
     }
 
+
+def remove_board(board_name: str):
+    # check whether the board exists with given name
+    exist_check = check_exist_board(board_name).fetchone()
+    if (exist_check == None):
+        return {
+            "result": 'no board detected with given name',
+            "status": 400
+        }
+    
+    query = delete(Board).where(Board.name == board_name).execution_options(synchronize_session="fetch")
+    session.execute(query)
+    session.commit()
+    
+    return {
+        "result": None,
+        "status": 200
+    }
+
