@@ -1,27 +1,29 @@
 from sqlalchemy import *
 from models import User, Board, Article
 
-from app import session
+from app import sql_session, session
 
 import datetime
 import hashlib
+from SessionStore import SessionStore
+
 
 RECORDS_PER_PAGE = 10
 
 ##### Helper Method #####
 
 def check_duplicate_email(email: str):
-    return session.execute(
+    return sql_session.execute(
         select(func.count()).select_from(User).filter_by(email = email)
     )
 
 def check_exist_board(board_name: str):
-    return session.execute(
+    return sql_session.execute(
         select(Board.bid).select_from(Board).filter_by(name = board_name)
     )
 
 def check_exist_article(article_id: int):
-    return session.execute(
+    return sql_session.execute(
         select(Article.bid).select_from(Article).filter_by(aid = article_id)
     )
 
@@ -54,8 +56,8 @@ def signup(name: str, email: str, password: str):
     password_ = hashlib.sha256(password.encode()).hexdigest()
     
     user = User(fullname = name, email = email, password = password_)
-    session.add(user)
-    session.commit()
+    sql_session.add(user)
+    sql_session.commit()
     
     return {
         "result": None,
@@ -79,7 +81,7 @@ def logout():
 
 def board_list(page: int):
     query = select(Board.bid, Board.name).select_from(Board).order_by(Board.bid).offset(page * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
-    result = session.execute(query).fetchall()
+    result = sql_session.execute(query).fetchall()
 
     def tuple_to_dict(tuple_: tuple) -> dict:
         board_id, board_name = tuple_
@@ -114,8 +116,8 @@ def create_board(board_name: str):
         }
     
     board = Board(name = board_name)
-    session.add(board)
-    session.commit()
+    sql_session.add(board)
+    sql_session.commit()
     
     return {
         "result": None,
@@ -140,8 +142,8 @@ def rename_board(board_name: str, target_name: str):
         }
     
     query = update(Board).where(Board.name == board_name).values(name = target_name).execution_options(synchronize_session="fetch")
-    session.execute(query)
-    session.commit()
+    sql_session.execute(query)
+    sql_session.commit()
 
     return {
         "result": None,
@@ -159,8 +161,8 @@ def remove_board(board_name: str):
         }
     
     query = delete(Board).where(Board.name == board_name).execution_options(synchronize_session="fetch")
-    session.execute(query)
-    session.commit()
+    sql_session.execute(query)
+    sql_session.commit()
     
     return {
         "result": None,
@@ -178,7 +180,7 @@ def read_articles(board_name: str, page: int):
         }
     
     query = select(Article.aid, Article.title, Article.texts).select_from(Article).where(Article.bid == exist_bid).order_by(Article.aid).offset(page * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
-    result = session.execute(query).fetchall()
+    result = sql_session.execute(query).fetchall()
     result = organize_articles(result)
     
     return {
@@ -202,8 +204,8 @@ def create_article(title: str, contents: str, bname: str):
         contents = contents,
         status = False
     )
-    session.execute(query)
-    session.commit()
+    sql_session.execute(query)
+    sql_session.commit()
     
     return {
         "result": None,
@@ -229,14 +231,14 @@ def edit_article(article_id: int, title: str, contents: str):
     # edit title
     if (title is not None):
         query = update(Article).where(Article.aid == article_id).values(title = title)
-        session.execute(query)
-        session.commit()
+        sql_session.execute(query)
+        sql_session.commit()
     
     # edit contents
     if (contents is not None):
         query = update(Article).where(Article.aid == article_id).values(texts = contents)
-        session.execute(query)
-        session.commit()
+        sql_session.execute(query)
+        sql_session.commit()
     
     return {
         "result": None,
@@ -254,7 +256,7 @@ def read_article(article_id: int):
         }
     
     query = select(Article.title, Article.texts, Article.date).select_from(Article).where(Article.aid == article_id, Article.status == False)
-    title, contents, date = session.execute(query).fetchone()
+    title, contents, date = sql_session.execute(query).fetchone()
     
     return {
         "result": {
@@ -277,8 +279,8 @@ def delete_article(article_id: int):
     
     # mark as "deleted"
     query = update(Article).where(Article.aid == article_id).values(status = True)
-    result = session.execute(query)
-    session.commit()
+    result = sql_session.execute(query)
+    sql_session.commit()
     
     return {
         "result": None,
@@ -296,8 +298,8 @@ def delete_article_s(article_id: int):
         }
     
     query = delete(Article).where(Article.aid == article_id)
-    result = session.execute(query)
-    session.commit()
+    result = sql_session.execute(query)
+    sql_session.commit()
     
     return {
         "result": None,
@@ -307,13 +309,13 @@ def delete_article_s(article_id: int):
 
 def recent_articles(rpp: int):
     query = select(Board.bid).select_from(Board)
-    board_ids = session.execute(query).fetchall()
+    board_ids = sql_session.execute(query).fetchall()
     
     result = dict()
     
-    for [board_id] in board_ids:
+    for [ board_id ] in board_ids:
         subquery = select(Article.title).select_from(Article).where(Article.bid == board_id, Article.status == False).order_by(desc(Article.date)).limit(rpp)
-        sub_result = session.execute(subquery).fetchall()
+        sub_result = sql_session.execute(subquery).fetchall()
         
         # extract elements in tuple to form a complete list
         sub_result = [item for t in sub_result for item in t]
