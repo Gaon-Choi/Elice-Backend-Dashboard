@@ -329,20 +329,16 @@ def edit_article(article_id: int, title: str, contents: str):
             "status": 200
         }
     
-    # edit title
-    if (title is not None):
-        query = update(Article).where(Article.aid == article_id).values(title = title)
-        sql_session.execute(query)
-        sql_session.commit()
-    
-    # edit contents
-    if (contents is not None):
-        query = update(Article).where(Article.aid == article_id).values(texts = contents)
-        sql_session.execute(query)
-        sql_session.commit()
+    # edit title and contents (PUT)
+    query = update(Article).where(Article.aid == article_id).values(title = title, texts = contents)
+    sql_session.execute(query)
+    sql_session.commit()
     
     return {
-        "result": None,
+        "result": {
+            "title": title,
+            "contents": contents
+        },
         "status": 200
     }
 
