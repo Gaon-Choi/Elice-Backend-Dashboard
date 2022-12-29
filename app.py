@@ -53,14 +53,13 @@ def boardlist():
 
 @app.route('/board/<board_name>', methods=['PUT', 'PATCH', 'DELETE', 'GET'])
 def board(board_name):
-    params = request.get_json()
-    
     # create new board
     if (request.method == 'PUT'):
         return query.create_board(board_name)
     
     # rename board with given name
     elif (request.method == 'PATCH'):
+        params = request.get_json()
         target_name = params['target_name']
         return query.rename_board(board_name, target_name)
     
