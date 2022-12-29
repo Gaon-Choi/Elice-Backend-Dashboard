@@ -167,6 +167,12 @@ def board_list(page: int):
 
 
 def create_board(board_name: str):
+    if 'userId' not in session:
+        return {
+            "result": 'No user logged in',
+            "status": 200
+        }
+        
     # check whether email address is duplicated
     duplicate_check = check_exist_board(board_name).fetchone()
     if (duplicate_check != None):
@@ -186,6 +192,12 @@ def create_board(board_name: str):
     
     
 def rename_board(board_name: str, target_name: str):
+    if 'userId' not in session:
+        return {
+            "result": 'No user logged in',
+            "status": 200
+        }
+        
     # check whether the board exists with given name
     exist_check = check_exist_board(board_name).fetchone()
     if (exist_check == None):
@@ -212,6 +224,12 @@ def rename_board(board_name: str, target_name: str):
 
 
 def remove_board(board_name: str):
+    if 'userId' not in session:
+        return {
+            "result": 'No user logged in',
+            "status": 200
+        }
+        
     # check whether the board exists with given name
     exist_check = check_exist_board(board_name).fetchone()
     if (exist_check == None):
@@ -250,6 +268,13 @@ def read_articles(board_name: str, page: int):
 
 
 def create_article(title: str, contents: str, bname: str):
+    # check login user
+    if 'userId' not in session:
+        return {
+            "result": 'No user logged in',
+            "status": 200
+        }
+    
     # check whether the board exists with given name
     [exist_bid] = check_exist_board(bname).fetchone()
     if (exist_bid is None):
@@ -274,6 +299,13 @@ def create_article(title: str, contents: str, bname: str):
 
 
 def edit_article(article_id: int, title: str, contents: str):
+    # check login user
+    if 'userId' not in session:
+        return {
+            "result": 'No user logged in',
+            "status": 200
+        }
+    
     # whether the article exists with given article id
     [exist_aid] = check_exist_article(article_id).fetchone()
     if (exist_aid is None):
@@ -329,6 +361,13 @@ def read_article(article_id: int):
 
 
 def delete_article(article_id: int):
+    # check login user
+    if 'userId' not in session:
+        return {
+            "result": 'No user logged in',
+            "status": 200
+        }
+        
     # check whether article exists with given article id
     exist_aid = check_exist_article(article_id).fetchone()
     if (exist_aid is None):
