@@ -1,11 +1,11 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, session, escape
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 import redis
 import os
 import models
 import query
-
+import SessionStore
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'd2707fea9778e085491e2dbbc73ff30e'
@@ -13,7 +13,7 @@ app.config["SECRET_KEY"] = 'd2707fea9778e085491e2dbbc73ff30e'
 db_string = "postgresql://developer:devpassword@127.0.0.1:25000/developer"
 
 engine = create_engine(db_string, echo=True)
-session = Session(bind=engine)
+sql_session = Session(bind=engine)
 
 @app.route('/')
 def home():
