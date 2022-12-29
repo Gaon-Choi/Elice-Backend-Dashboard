@@ -305,14 +305,14 @@ def delete_article_s(article_id: int):
     }
 
 
-def recent_articles():
+def recent_articles(rpp: int):
     query = select(Board.bid).select_from(Board)
     board_ids = session.execute(query).fetchall()
     
     result = dict()
     
     for [board_id] in board_ids:
-        subquery = select(Article.title).select_from(Article).where(Article.bid == board_id, Article.status == False).order_by(desc(Article.date))
+        subquery = select(Article.title).select_from(Article).where(Article.bid == board_id, Article.status == False).order_by(desc(Article.date)).limit(rpp)
         sub_result = session.execute(subquery).fetchall()
         
         # extract elements in tuple to form a complete list

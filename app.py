@@ -105,9 +105,10 @@ def article_contents(article_id: int):
 def article_delete(article_id: int):
     return query.delete_article_s(article_id)
 
-@app.route('/article/recent', methods = ['GET'])
-def article_recent():
-    return query.recent_articles()
+@app.route('/article/recent/<rpp>', methods = ['GET'])
+def article_recent(rpp: int):
+    rpp = abs(int(rpp)) # use absolute value if negative
+    return query.recent_articles(rpp)
 
 
 if __name__ == '__main__':
