@@ -94,9 +94,12 @@ def article():
     
 @app.route('/article/<article_id>', methods = ['GET', 'PATCH'])
 def article_contents(article_id: int):
+    if (request.method == 'GET'):
+        return query.read_article(article_id)
 
     elif (request.method == 'PATCH'):
         return query.delete_article(article_id)
+
 
 if __name__ == '__main__':
     models.Base.metadata.create_all(bind=engine)

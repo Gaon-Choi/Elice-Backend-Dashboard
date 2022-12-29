@@ -218,6 +218,28 @@ def edit_article(article_id: int, title: str, contents: str):
     }
 
 
+def read_article(article_id: int):
+    # check whether article exists with given article id
+    exist_aid = check_exist_article(article_id).fetchone()
+    if (exist_aid is None):
+        return {
+            "result": 'no article detected with given id',
+            "status": 400
+        }
+    
+    query = select(Article.title, Article.texts, Article.date).select_from(Article).where(Article.aid == article_id, Article.status == False)
+    title, contents, date = session.execute(query).fetchone()
+    
+    return {
+        "result": {
+            "title": title,
+            "contents": contents,
+            "date": date
+        },
+        "status": 200
+    }
+
+
 def delete_article(article_id: int):
     # check whether article exists with given article id
     exist_aid = check_exist_article(article_id).fetchone()
