@@ -21,7 +21,7 @@ class User(Base):
     email = Column('email', String(50))
     
     # user's password -> should be private!
-    password = Column('password', String(20))
+    password = Column('password', String(80))
 
 
     def __init__(self, fullname, email, password):
