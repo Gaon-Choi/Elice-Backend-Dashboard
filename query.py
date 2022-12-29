@@ -71,12 +71,12 @@ def logout():
 
 
 def board_list(page: int):
-    query = select(Board.bid, Board.name).select_from(Board).order_by(Board.bid).offset(page).limit(RECORDS_PER_PAGE)
+    query = select(Board.bid, Board.name).select_from(Board).order_by(Board.bid).offset(page * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
     result = session.execute(query).fetchall()
 
     def tuple_to_dict(tuple_: tuple) -> dict:
-        a, b = tuple_
-        return {"bid": a, "name": b}
+        board_id, board_name = tuple_
+        return { "bid": board_id, "name": board_name }
     
     result = list(map(tuple_to_dict, result))
     
