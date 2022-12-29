@@ -10,6 +10,11 @@ from SessionStore import SessionStore
 
 RECORDS_PER_PAGE = 10
 
+IP = '127.0.0.1'    # localhost
+PORT = 6379
+REDIS_URL = 'redis://{ip}:{port}'.format(ip=IP, port=PORT)
+
+
 ##### Helper Method #####
 
 def check_duplicate_email(email: str):
@@ -69,8 +74,15 @@ def signup(name: str, email: str, password: str):
     sql_session.add(user)
     sql_session.commit()
     
+    store = SessionStore(email, REDIS_URL)
+    store.set('userEmail', email)
+    store.set('userName', name)
+    
     return {
-        "result": None,
+        "result": {
+            "fullname": name,
+            "email": email
+        },
         "status": 201   # 201 Created
     }
 
