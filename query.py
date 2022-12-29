@@ -304,3 +304,25 @@ def delete_article_s(article_id: int):
         "status": 200
     }
 
+
+def recent_articles():
+    query = select(Board.bid).select_from(Board)
+    board_ids = session.execute(query).fetchall()
+    
+    result = dict()
+    
+    for [board_id] in board_ids:
+        subquery = select(Article.title).select_from(Article).where(Article.bid == board_id, Article.status == False).order_by(desc(Article.date))
+        sub_result = session.execute(subquery).fetchall()
+        
+        # extract elements in tuple to form a complete list
+        sub_result = [item for t in sub_result for item in t]
+        
+        # apend a title list to the dictionary
+        result[board_id] = sub_result
+    
+    return {
+        "result": result,
+        "status": 200
+    }
+        

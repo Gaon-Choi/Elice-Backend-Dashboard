@@ -105,6 +105,11 @@ def article_contents(article_id: int):
 def article_delete(article_id: int):
     return query.delete_article_s(article_id)
 
+@app.route('/article/recent', methods = ['GET'])
+def article_recent():
+    return query.recent_articles()
+
+
 if __name__ == '__main__':
     models.Base.metadata.create_all(bind=engine)
     app.run(debug=True)
