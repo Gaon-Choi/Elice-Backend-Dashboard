@@ -71,7 +71,7 @@ def board(board_name):
     # read articles from a board with given name (paginated)
     elif (request.method == 'GET'):
         page = request.args.get('page', type=int, default=1)
-        return query.read_articles(board_name)
+        return query.read_articles(board_name, page)
     
     # invalid path
     return {
