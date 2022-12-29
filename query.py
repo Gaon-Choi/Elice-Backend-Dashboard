@@ -298,7 +298,10 @@ def create_article(title: str, contents: str, bname: str):
     sql_session.commit()
     
     return {
-        "result": None,
+        "result": {
+            "title": title,
+            "contents": contents
+        },
         "status": 200
     }
 
