@@ -4,7 +4,7 @@ from models import User, Board, Article
 from app import session
 
 import datetime
-
+import hashlib
 
 RECORDS_PER_PAGE = 10
 
@@ -43,7 +43,10 @@ def signup(name: str, email: str, password: str):
             "status": 400
         }
     
-    user = User(fullname = name, email = email, password = password)
+    # SHA encryption
+    password_ = hashlib.sha256(password.encode()).hexdigest()
+    
+    user = User(fullname = name, email = email, password = password_)
     session.add(user)
     session.commit()
     
