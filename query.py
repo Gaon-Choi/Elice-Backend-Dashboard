@@ -34,6 +34,16 @@ def organize_articles(articles: list):
         result.append({ "id": aid, "title": title, "contents": content })
     return result
 
+def isValidEmail(email: str) -> bool:
+    import re
+    # regular expression for e-mail address form
+    regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+    
+    if re.fullmatch(regex, email):
+      return True
+    
+    return False
+
 #########################
 
 def signup(name: str, email: str, password: str):
@@ -93,17 +103,6 @@ def board_list(page: int):
         "result": result,
         "status": 200
     }
-
-
-def isValidEmail(email: str) -> bool:
-    import re
-    # regular expression for e-mail address form
-    regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
-    
-    if re.fullmatch(regex, email):
-      return True
-    
-    return False
 
 
 def create_board(board_name: str):
