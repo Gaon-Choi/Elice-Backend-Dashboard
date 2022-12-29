@@ -398,7 +398,9 @@ def delete_article(article_id: int):
         "status": 200
     }
 
-
+'''
+    This method is intended to be used by the Administrator.
+'''
 def delete_article_s(article_id: int):
     # check whether article exists with given article id
     exist_aid = check_exist_article(article_id).fetchone()
