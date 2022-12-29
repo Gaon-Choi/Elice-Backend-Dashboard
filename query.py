@@ -25,6 +25,13 @@ def check_exist_article(article_id: int):
         select(Article.bid).select_from(Article).filter_by(aid = article_id)
     )
 
+def organize_articles(articles: list):
+    result = list()
+    for article in articles:
+        aid, title, content = article
+        result.append({ "id": aid, "title": title, "contents": content })
+    return result
+
 #########################
 
 def signup(name: str, email: str, password: str):
@@ -157,6 +164,25 @@ def remove_board(board_name: str):
     
     return {
         "result": None,
+        "status": 200
+    }
+
+
+def read_articles(board_name: str, page: int):
+    # check whether the board exists with given name
+    [exist_bid] = check_exist_board(board_name).fetchone()
+    if (exist_bid == None):
+        return {
+            "result": 'no board detected with given name',
+            "status": 400
+        }
+    
+    query = select(Article.aid, Article.title, Article.texts).select_from(Article).where(Article.bid == exist_bid).order_by(Article.aid).offset(page * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
+    result = session.execute(query).fetchall()
+    result = organize_articles(result)
+    
+    return {
+        "result": result,
         "status": 200
     }
 
