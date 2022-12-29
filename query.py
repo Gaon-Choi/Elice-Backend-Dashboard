@@ -250,12 +250,15 @@ def remove_board(board_name: str):
 
 def read_articles(board_name: str, page: int):
     # check whether the board exists with given name
-    [exist_bid] = check_exist_board(board_name).fetchone()
+    exist_bid = check_exist_board(board_name).fetchone()
+
     if (exist_bid == None):
         return {
             "result": 'no board detected with given name',
             "status": 400
         }
+    
+    [ exist_bid ] = exist_bid
     
     query = select(Article.aid, Article.title, Article.texts).select_from(Article).where(Article.bid == exist_bid).order_by(Article.aid).offset(page * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
     result = sql_session.execute(query).fetchall()
@@ -276,12 +279,13 @@ def create_article(title: str, contents: str, bname: str):
         }
     
     # check whether the board exists with given name
-    [exist_bid] = check_exist_board(bname).fetchone()
+    exist_bid = check_exist_board(bname).fetchone()
     if (exist_bid is None):
         return {
             "result": 'no board detected with given name',
             "status": 400
         }
+    [exist_bid] = exist_bid
     
     query = insert(Article).values(
         board_id = exist_bid,
