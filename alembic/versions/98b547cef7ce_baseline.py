@@ -23,7 +23,7 @@ def upgrade():
         sa.Column('id', sa.Integer(), primary_key = True),
         sa.Column('name', String(30)),
         sa.Column('email', String(50)),
-        sa.Column('password', String(20))
+        sa.Column('password', String(80))
     )
 
     # Table "boards"
@@ -38,6 +38,7 @@ def upgrade():
         'articles',
         sa.Column('id', Integer, primary_key = True),
         sa.Column('board_id', Integer, ForeignKey('boards.id')),
+        sa.Column('title', String(100)),
         sa.Column('contents', Text),
         sa.Column('date', DateTime, default = func.now()),
         sa.Column('edate', DateTime, default = func.now()),
