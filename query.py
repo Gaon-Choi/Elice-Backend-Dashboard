@@ -134,7 +134,20 @@ def login(email: str, password: str):
     
 
 def logout():
-    pass
+    if 'userId' not in session:
+        return {
+            "result": 'No user logged in',
+            "status": 200
+        }
+    
+    # drop "userId", "userEmail" keys from session
+    session.pop('userId', None)
+    session.pop('userEmail', None)
+    
+    return {
+        "result": "Logged out successfully",
+        "status": 200
+    }
 
 
 def board_list(page: int):
