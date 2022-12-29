@@ -59,6 +59,9 @@ class Article(Base):
     # article contents
     texts = Column('contents', Text)
     
+    # writer (User id)
+    writer = Column('writer', Integer, ForeignKey('users.id'))
+    
     # article date (create)
     date = Column('date', DateTime(timezone=True), server_default=func.now())
     
@@ -68,10 +71,11 @@ class Article(Base):
     # status -> this system should be "vengeful"
     status = Column('status', Boolean, default = False)
     
-    def __init__(self, bid, title, texts):
+    def __init__(self, bid, title, texts, writer):
         self.bid = bid
         self.title = title
         self.texts = texts
+        self.writer = writer
         self.date = datetime.datetime.utcnow()
         self.edate = datetime.datetime.utcnow()
         self.status = False
@@ -82,6 +86,7 @@ class Article(Base):
             "bid": self.bid,
             "title": self.title,
             "texts": self.texts,
+            "writer": self.writer,
             "date": self.date,
             "edate": self.edate,
             "status": self.status
