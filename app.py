@@ -79,6 +79,18 @@ def board(board_name):
     }
 
 
+@app.route('/article', methods=['POST', 'PATCH'])
+def article():
+    params = request.get_json()
+    title = params['title']
+    contents = params['contents']
+    if (request.method == 'POST'):
+        bname = params['board_name']
+        return query.create_article(title, contents, bname)
+    
+    elif (request.method == 'PATCH'):
+        article_id = params['article_id']
+        return query.edit_article(article_id, title, contents)
 
 if __name__ == '__main__':
     models.Base.metadata.create_all(bind=engine)

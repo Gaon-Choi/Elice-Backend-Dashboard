@@ -159,3 +159,61 @@ def remove_board(board_name: str):
         "status": 200
     }
 
+
+def create_article(title: str, contents: str, bname: str):
+    # check whether the board exists with given name
+    [exist_bid] = check_exist_board(bname).fetchone()
+    if (exist_bid is None):
+        return {
+            "result": 'no board detected with given name',
+            "status": 400
+        }
+    
+    query = insert(Article).values(
+        board_id = exist_bid,
+        title = title,
+        contents = contents,
+        status = False
+    )
+    session.execute(query)
+    session.commit()
+    
+    return {
+        "result": None,
+        "status": 200
+    }
+
+
+def edit_article(article_id: int, title: str, contents: str):
+    # whether the article exists with given article id
+    [exist_aid] = check_exist_article(article_id).fetchone()
+    if (exist_aid is None):
+        return {
+            "result": 'no article detected with given id',
+            "status": 400
+        }
+    
+    if (title is None and contents is None):
+        return {
+            "result": "Bad Request",
+            "status": 400
+        }
+    
+    # edit title
+    if (title is not None):
+        query = update(Article).where(Article.aid == article_id).values(title = title)
+        session.execute(query)
+        session.commit()
+    
+    # edit contents
+    if (contents is not None):
+        query = update(Article).where(Article.aid == article_id).values(texts = contents)
+        session.execute(query)
+        session.commit()
+    
+    return {
+        "result": None,
+        "status": 200
+    }
+
+        "status": 200
