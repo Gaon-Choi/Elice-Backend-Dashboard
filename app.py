@@ -23,15 +23,16 @@ def home():
 @app.route('/user', defaults={'path': ''})
 @app.route('/user/<path:path>', methods = ['PUT', 'GET', 'PATCH'])
 def user(path):
-    params = request.get_json()
-    if path == 'signup':
+    if path == 'signup' and request.method == 'POST':
+        params = request.get_json()
         name = params['name']
         email = params['email']
         password = params['password']
         return query.signup(name, email, password)
     
-    elif path == 'login':
-        email = params['name']
+    elif path == 'login' and request.method == 'PATCH':
+        params = request.get_json()
+        email = params['email']
         password = params['password']
         return query.login(email, password)
     
