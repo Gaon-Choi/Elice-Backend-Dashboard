@@ -115,3 +115,28 @@ def create_board(board_name: str):
     }
     
     
+def rename_board(board_name: str, target_name: str):
+    # check whether the board exists with given name
+    exist_check = check_exist_board(board_name).fetchone()
+    if (exist_check == None):
+        return {
+            "result": 'no board detected with given name',
+            "status": 400
+        }
+    
+    # if the target name is equal to the board name, it is not efficient
+    elif (board_name == target_name):
+        return {
+            "result": 'target name is the same with present name',
+            "status": 400
+        }
+    
+    query = update(Board).where(Board.name == board_name).values(name = target_name).execution_options(synchronize_session="fetch")
+    session.execute(query)
+    session.commit()
+
+    return {
+        "result": None,
+        "status": 200
+    }
+
