@@ -85,6 +85,7 @@ def board_list(page: int):
         "status": 200
     }
 
+
 def isValidEmail(email: str) -> bool:
     import re
     # regular expression for e-mail address form
@@ -216,4 +217,23 @@ def edit_article(article_id: int, title: str, contents: str):
         "status": 200
     }
 
+
+def delete_article(article_id: int):
+    # check whether article exists with given article id
+    exist_aid = check_exist_article(article_id).fetchone()
+    if (exist_aid is None):
+        return {
+            "result": 'no article detected with given id',
+            "status": 400
+        }
+    
+    # mark as "deleted"
+    query = update(Article).where(Article.aid == article_id).values(status = True)
+    result = session.execute(query)
+    session.commit()
+    
+    return {
+        "result": None,
         "status": 200
+    }
+
