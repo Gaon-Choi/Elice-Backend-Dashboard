@@ -20,8 +20,7 @@ def home():
     return render_template('layout.html')
 
 
-@app.route('/user', defaults={'path': ''})
-@app.route('/user/<path:path>', methods = ['PUT', 'GET', 'PATCH'])
+@app.route('/user/<path:path>', methods = ['POST', 'PATCH'])
 def user(path):
     if path == 'signup' and request.method == 'POST':
         params = request.get_json()
