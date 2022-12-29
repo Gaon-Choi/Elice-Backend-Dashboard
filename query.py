@@ -106,7 +106,7 @@ def isValidEmail(email: str) -> bool:
 
 def create_board(board_name: str):
     # check whether email address is duplicated
-    [duplicate_check] = check_exist_board(board_name).fetchone()
+    duplicate_check = check_exist_board(board_name).fetchone()
     if (duplicate_check != None):
         return {
             "result": 'duplicate board name detected',
