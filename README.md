@@ -3,17 +3,44 @@
 ## Project Outline
 본 프로젝트에서는 간단한 게시판 서비스를 구축하기 위한 API를 담고 있다.
 
-유저 정보를 이용하여 로그인 및 로그아웃 기능을 기반으로 게시판과 글 작성, 삭제, 수정 등에 적절한 권한 설정을 적용한다.
+유저 정보를 이용하여 로그인 및 로그아웃 기능을 기반으로 게시판과 게시글 작성, 삭제, 수정 등에 적절한 권한 설정을 적용한다.
 
 대시보드에는 여러 개의 게시판이 존재할 수 있으며, 유저로 로그인하여야 새로운 게시판을 만들거나 삭제할 수 있다.
 
-하나의 게시판에는 다수의 글이 작성될 수 있다. 각각의 글을 읽는 것에는 별도의 권한 조건이 없으나, 특정 글을 삭제하거나 수정하는 작업은 해당 글을 작성한 유저만 수행할 수 있도록 권한을 설정한다.
+하나의 게시판에는 다수의 게시글이 작성될 수 있다. 각각의 게시글을 읽는 것에는 별도의 권한 조건이 없으나, 특정 게시글을 삭제하거나 수정하는 작업은 해당 게시글을 작성한 유저만 수행할 수 있도록 권한을 설정한다.
 
 ## Design
+### Schematic Design
+본 프로젝트에서 사용한 테이블 디자인입니다. 컬럼명에 굵은 글씨로 표시된 것은 Primary Key를 나타내며, 밑줄 형태로 표시된 것은 Foreign Key를 나타냅니다.
 
+1. 사용자 테이블 users
+|column name|data type|detail|
+|------|---|---|
+|**id**|Integer|사용자 식별 id|
+|name|Character(30)|사용자 이름|
+|email|Character(50)|사용자 이메일 (중복불가)|
+|password|Character(80)|사용자 패스워드 (SHA 적용)|
+
+2. 게시판 테이블 boards
+|column name|data type|detail|
+|------|---|---|
+|**id**|Integer|게시판 식별 id|
+|name|Character(30)|게시판 이름|
+
+3. 게시글 테이블 articles
+|column name|data type|detail|
+|------|---|---|
+|**id**|Integer|게시글 식별 id|
+|<U>board_id</U>|Integer|소속 게시판 id: boards.id|
+|title|Character(100)|게시글 제목|
+|contents|Text|게시글 내용|
+|<U>writer</U>|Integer|작성 유저 id: users.id|
+|date|Timestamp with time zone|게시글 생성일|
+|edate|Timestamp with time zone|게시글 수정일 (최신)|
+|status|Boolean|게시글 삭제 여부|
 
 ## REST API Specification
-아래는 유저, 게시판, 글에 대한 API 설명을 담고 있다.
+아래는 유저, 게시판, 게시글에 대한 API 설명을 담고 있다.
 모든 API는 응답으로 JSON 형식을 전송하며 "result"와 "status"의 두 개의 키를 가지고 있다. 이는 각각 요청에 대한 결과와 상태 코드를 나타낸다.
 
 ### User
@@ -150,14 +177,14 @@
 
 ### Article
 
-1. 글 생성 기능
+1. 게시글 생성 기능
 
-2. 글 조회 기능
+2. 게시글 조회 기능
 
-3. 글 제목 및 내용 변경 기능
+3. 게시글 제목 및 내용 변경 기능
 
-4. 글 제거 기능 (사용자)
+4. 게시글 제거 기능 (사용자)
 
-5. 글 제거 기능 (관리자)
+5. 게시글 제거 기능 (관리자)
 
 ## How to Run
