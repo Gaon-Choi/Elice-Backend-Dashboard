@@ -5,6 +5,7 @@ from app import sql_session, session
 
 import datetime
 import hashlib
+import json
 from SessionStore import SessionStore
 
 
@@ -55,7 +56,7 @@ def signup(name: str, email: str, password: str):
     # check email format validity
     if (isValidEmail(email) is False):
         return {
-            "result": 'invalid email address',
+            "result": 'Invalid email address.',
             "status": 400
         }
     
@@ -63,7 +64,7 @@ def signup(name: str, email: str, password: str):
     [duplicate_check] = check_duplicate_email(email).fetchone()
     if (duplicate_check > 0):
         return {
-            "result": 'duplicate email detected',
+            "result": 'Duplicate email detected.',
             "status": 400
         }
     
@@ -78,13 +79,13 @@ def signup(name: str, email: str, password: str):
     store.set('userEmail', email)
     store.set('userName', name)
     
-    return {
+    return json.dumps({
         "result": {
             "fullname": name,
             "email": email
         },
         "status": 201   # 201 Created
-    }
+    }, indent = 2)
 
 
 def login(email: str, password: str):
@@ -98,7 +99,7 @@ def login(email: str, password: str):
     # check email format validity
     if (isValidEmail(email) is False):
         return {
-            "result": 'email address has invalid form.',
+            "result": 'Email address has invalid form.',
             "status": 400
         }
     
@@ -108,7 +109,7 @@ def login(email: str, password: str):
     if (result is None):
         # account with given email does not exist
         return {
-            "result": 'User does not exist with given e-mail address',
+            "result": 'User does not exist with given email address.',
             "status": 200
         }
     
@@ -126,19 +127,19 @@ def login(email: str, password: str):
     session['userId'] = user_id
     session['userEmail'] = user_email
     
-    return {
+    return json.dumps({
         "result": {
             "userId": user_id,
             "userEmail": user_email
         },
         "status": 200
-    }
+    }, indent = 2)
     
 
 def logout():
     if 'userId' not in session:
         return {
-            "result": 'No user logged in',
+            "result": 'No user logged in.',
             "status": 401
         }
     
@@ -147,7 +148,7 @@ def logout():
     session.pop('userEmail', None)
     
     return {
-        "result": "Logged out successfully",
+        "result": "Logged out successfully.",
         "status": 200
     }
 
@@ -171,7 +172,7 @@ def board_list(page: int):
 def create_board(board_name: str):
     if 'userId' not in session:
         return {
-            "result": 'No user logged in',
+            "result": 'No user logged in.',
             "status": 401
         }
         
@@ -179,7 +180,7 @@ def create_board(board_name: str):
     duplicate_check = check_exist_board(board_name).fetchone()
     if (duplicate_check != None):
         return {
-            "result": 'duplicate board name detected',
+            "result": 'Duplicate board name detected.',
             "status": 400
         }
     
@@ -188,7 +189,9 @@ def create_board(board_name: str):
     sql_session.commit()
     
     return {
-        "result": None,
+        "result": {
+            "board_name": board_name
+        },
         "status": 201   # 201 Created
     }
     
@@ -196,7 +199,7 @@ def create_board(board_name: str):
 def rename_board(board_name: str, target_name: str):
     if 'userId' not in session:
         return {
-            "result": 'No user logged in',
+            "result": 'No user logged in.',
             "status": 401
         }
         
@@ -204,14 +207,14 @@ def rename_board(board_name: str, target_name: str):
     exist_check = check_exist_board(board_name).fetchone()
     if (exist_check == None):
         return {
-            "result": 'no board detected with given name',
+            "result": 'No board detected with given name.',
             "status": 400
         }
     
     # if the target name is equal to the board name, it is not efficient
     elif (board_name == target_name):
         return {
-            "result": 'target name is the same with present name',
+            "result": 'Target name is the same with present name.',
             "status": 400
         }
     
@@ -231,7 +234,7 @@ def rename_board(board_name: str, target_name: str):
 def remove_board(board_name: str):
     if 'userId' not in session:
         return {
-            "result": 'No user logged in',
+            "result": 'No user logged in.',
             "status": 401
         }
         
@@ -239,7 +242,7 @@ def remove_board(board_name: str):
     exist_check = check_exist_board(board_name).fetchone()
     if (exist_check == None):
         return {
-            "result": 'no board detected with given name',
+            "result": 'No board detected with given name.',
             "status": 400
         }
     
@@ -261,7 +264,7 @@ def read_articles(board_name: str, page: int):
 
     if (exist_bid == None):
         return {
-            "result": 'no board detected with given name',
+            "result": 'No board detected with given name.',
             "status": 400
         }
     
@@ -271,17 +274,17 @@ def read_articles(board_name: str, page: int):
     result = sql_session.execute(query).fetchall()
     result = organize_articles(result)
     
-    return {
+    return json.dumps({
         "result": result,
         "status": 200
-    }
+    }, indent = 2)
 
 
 def create_article(title: str, contents: str, bname: str):
     # check login user
     if 'userId' not in session:
         return {
-            "result": 'No user logged in',
+            "result": 'No user logged in.',
             "status": 401
         }
     
@@ -289,7 +292,7 @@ def create_article(title: str, contents: str, bname: str):
     exist_bid = check_exist_board(bname).fetchone()
     if (exist_bid is None):
         return {
-            "result": 'no board detected with given name',
+            "result": 'No board detected with given name.',
             "status": 400
         }
     [exist_bid] = exist_bid
@@ -304,20 +307,20 @@ def create_article(title: str, contents: str, bname: str):
     sql_session.execute(query)
     sql_session.commit()
     
-    return {
+    return json.dumps({
         "result": {
             "title": title,
             "contents": contents
         },
         "status": 201
-    }
+    }, indent=2)
 
 
 def edit_article(article_id: int, title: str, contents: str):
     # check login user
     if 'userId' not in session:
         return {
-            "result": 'No user logged in',
+            "result": 'No user logged in.',
             "status": 401
         }
     
@@ -325,7 +328,7 @@ def edit_article(article_id: int, title: str, contents: str):
     result = check_exist_article(article_id).fetchone()
     if (result is None):
         return {
-            "result": 'no article detected with given id',
+            "result": 'No article detected with given id.',
             "status": 400
         }
     
@@ -343,13 +346,13 @@ def edit_article(article_id: int, title: str, contents: str):
     sql_session.execute(query)
     sql_session.commit()
     
-    return {
+    return json.dumps({
         "result": {
             "title": title,
             "contents": contents
         },
         "status": 200
-    }
+    }, indent = 2)
 
 
 def read_article(article_id: int):
@@ -357,7 +360,7 @@ def read_article(article_id: int):
     result = check_exist_article(article_id).fetchone()
     if (result is None):
         return {
-            "result": 'no article detected with given id',
+            "result": 'No article detected with given id.',
             "status": 400
         }
     
@@ -365,21 +368,21 @@ def read_article(article_id: int):
     query = select(Article.title, Article.texts, Article.date).select_from(Article).where(Article.aid == article_id, Article.status == False)
     title, contents, date = sql_session.execute(query).fetchone()
     
-    return {
+    return json.dumps({
         "result": {
             "title": title,
             "contents": contents,
-            "date": date
+            "date": str(date)
         },
         "status": 200
-    }
+    }, indent = 2)
 
 
 def delete_article(article_id: int):
     # check login user
     if 'userId' not in session:
         return {
-            "result": 'No user logged in',
+            "result": 'No user logged in.',
             "status": 401
         }
         
@@ -387,7 +390,7 @@ def delete_article(article_id: int):
     result = check_exist_article(article_id).fetchone()
     if (result is None):
         return {
-            "result": 'no article detected with given id',
+            "result": 'No article detected with given id.',
             "status": 400
         }
     
@@ -420,7 +423,7 @@ def delete_article_s(article_id: int):
     exist_aid = check_exist_article(article_id).fetchone()
     if (exist_aid is None):
         return {
-            "result": 'no article detected with given id',
+            "result": 'No article detected with given id.',
             "status": 400
         }
     
