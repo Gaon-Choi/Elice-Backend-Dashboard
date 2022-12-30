@@ -43,7 +43,7 @@
 |status|Boolean|게시글 삭제 여부|
 
 ## REST API Specification
-아래는 유저, 게시판, 게시글에 대한 API 설명을 담고 있다.
+아래는 유저, 게시판, 게시글, 대시보드에 대한 API 설명을 담고 있다.
 모든 API는 응답으로 JSON 형식을 전송하며 "result"와 "status"의 두 개의 키를 가지고 있다. 이는 각각 요청에 대한 결과와 상태 코드를 나타낸다.
 
 ### User
@@ -168,27 +168,62 @@
 ### Board
 
 1. 게시판 추가 기능
+- endpoint: `PUT /board/:board_name HTTP/1.1`
+
+  e.g. `PUT /board/notice`
 
 2. 게시판 목록 조회 기능
+- endpoint: `GET /boardlist?page={page} HTTP/1.1`
+
+  e.g. `GET /boardlist?page=1`
 
 3. 게시판 이름 변경 기능
+- endpoint: `PATCH /board/:board_name HTTP/1.1`
+
+  e.g. `PATCH /board/notice`
 
 4. 게시판 제거 기능
+- endpoint: `DELETE /board/:board_name HTTP/1.1`
+
+  e.g. `DELETE /board/notice`
 
 5. 게시판 글 목록 조회 기능
+- endpoint: `GET /board/:board_name?page={page} HTTP/1.1`
+
+  e.g. `GET /board/notice?page=2`
 
 
 ### Article
 
 1. 게시글 생성 기능
+- endpoint: `POST /article HTTP/1.1`
 
 2. 게시글 조회 기능
+- endpoint: `GET /article/:article_id HTTP/1.1`
+
+  e.g. `GET /article/23 HTTP/1.1`
 
 3. 게시글 제목 및 내용 변경 기능
+- endpoint: `PUT /article HTTP/1.1`
 
 4. 게시글 제거 기능 (사용자)
+- endpoint: `PATCH /article/:article_id HTTP/1.1`
+
+  e.g. `PATCH /article/23 HTTP/1.1`
 
 5. 게시글 제거 기능 (관리자)
+- endpoint: `DELETE /article/delete/:article_id HTTP/1.1`
+
+  e.g. `DELETE /article/23 HTTP/1.1`
+
+### Dashboard
+
+1. 최근 게시글 조회
+- endpoint: `GET /article/recent/:rpp HTTP/1.1`
+
+  rpp: 한 게시판 별로 조회할 게시글의 개수
+
+  e.g. `GET /article/recent/15 HTTP/1.1`
 
 ## How to Run
 
@@ -220,4 +255,4 @@ python app.py
 ```
 
 6. 테스트는 Postman으로 진행하였다. Postman을 실행한 후 API Specification을 참고하여 request를 보내고 response를 확인할 수 있다.
-<img src="/docs/postman.png" width="700" height="300">
+<img src="/docs/postman.png" width="700" height="350">
