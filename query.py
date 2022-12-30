@@ -137,7 +137,7 @@ def logout():
     if 'userId' not in session:
         return {
             "result": 'No user logged in',
-            "status": 200
+            "status": 401
         }
     
     # drop "userId", "userEmail" keys from session
@@ -218,7 +218,10 @@ def rename_board(board_name: str, target_name: str):
     sql_session.commit()
 
     return {
-        "result": None,
+        "result": {
+            "board name": board_name,
+            "target name": target_name
+        },
         "status": 200
     }
 
@@ -243,7 +246,9 @@ def remove_board(board_name: str):
     sql_session.commit()
     
     return {
-        "result": None,
+        "result": {
+            "board_name": board_name
+        },
         "status": 200
     }
 
@@ -302,7 +307,7 @@ def create_article(title: str, contents: str, bname: str):
             "title": title,
             "contents": contents
         },
-        "status": 200
+        "status": 201
     }
 
 
@@ -394,7 +399,9 @@ def delete_article(article_id: int):
     sql_session.commit()
     
     return {
-        "result": None,
+        "result": {
+            "article_id": article_id
+        },
         "status": 200
     }
 
@@ -415,7 +422,9 @@ def delete_article_s(article_id: int):
     sql_session.commit()
     
     return {
-        "result": None,
+        "result": {
+            "article_id": article_id
+        },
         "status": 200
     }
 
