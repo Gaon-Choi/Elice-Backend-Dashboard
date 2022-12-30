@@ -220,3 +220,4 @@ python app.py
 ```
 
 6. 테스트는 Postman으로 진행하였다. Postman을 실행한 후 API Specification을 참고하여 request를 보내고 response를 확인할 수 있다.
+<img src="/docs/postman.png" width="700" height="300">
