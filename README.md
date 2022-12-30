@@ -22,21 +22,118 @@
 - endpoint: `POST /user/signup HTTP/1.1`
 - body: { "name", "email", "password" }
 - request body example
-```json
-{
-    "name": "chulsoo",
-    "email": "chulsoo@naver.com",
-    "password": "chl10280"
-}
-```
+  ```json
+  {
+      "name": "chulsoo",
+      "email": "chulsoo@naver.com",
+      "password": "chl10280"
+  }
+  ```
+- response
 
+  1) 이메일 형식이 잘못된 경우
+  ```json
+    {
+      "result": "invalid email address",
+      "status": 400
+    }
+  ```
+
+  2) 중복된 이메일로 기가입자가 존재하는 경우
+  ```json
+    {
+      "result": "duplicate email detected",
+      "status": 400
+    }
+  ```
+
+  3) 유저 가입이 성공적으로 이뤄진 경우
+  ```json
+    {
+      "result": {
+        "fullname": user_name,
+        "email": user_email
+      },
+      "status": 201
+    }
+  ```
 
 2. 사용자 로그인 기능
 - endpoint: `POST /user/login HTTP/1.1`
 
+- body: { "name", "email", "password" }
+
+- request body example
+  ```json
+  {
+      "name": "chulsoo",
+      "email": "chulsoo@naver.com",
+      "password": "chl10280"
+  }
+  ```
+
+- response
+
+  1) 이미 로그인된 경우
+  ```json
+  {
+    "result": "A user already logged in.",
+    "status": 200
+  }
+  ```
+  2) 이메일 형식이 잘못된 경우
+  ```json
+  {
+    "result": "email address has invalid form.",
+    "status": 400
+  }
+  ```
+  3) 가입 정보가 존재하지 않는 경우(이메일 기반)
+  ```json
+  {
+    "result": "User does not exist with given e-mail address",
+    "status": 200
+  }
+  ```
+  4) 입력된 비밀번호가 틀린 경우
+  ```json
+  {
+    "result": "Wrong password!",
+    "status": 401
+  }
+  ```
+  5) 로그인에 성공한 경우
+  ```json
+  {
+    "result": {
+      "userId": user_id,
+      "userEmail": user_email
+    },
+    "status": 200
+  }
+  ```
+
 3. 사용자 로그아웃 기능
 - endpoint: `POST /user/logout HTTP/1.1`
 
+- body: (없음)
+
+- response
+
+  1) 로그인 상태가 아닌 경우
+  ```json
+  {
+    "result": "No user logged in",
+    "status": 401
+  }
+  ```
+  2) 로그아웃이 성공적으로 이뤄진 경우
+  ```json
+  {
+    "result": "Logged out successfully",
+    "status": 200
+  }
+  ```
 
 ### Board
 
@@ -48,9 +145,19 @@
 
 4. 게시판 제거 기능
 
-5.
+5. 게시판 글 목록 조회 기능
 
 
 ### Article
+
+1. 글 생성 기능
+
+2. 글 조회 기능
+
+3. 글 제목 및 내용 변경 기능
+
+4. 글 제거 기능 (사용자)
+
+5. 글 제거 기능 (관리자)
 
 ## How to Run
