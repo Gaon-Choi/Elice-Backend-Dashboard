@@ -118,7 +118,7 @@ def login(email: str, password: str):
     if (user_password != password):
         return {
             "result": "Wrong password!",
-            "status": 200
+            "status": 401
         }
     
     session['userId'] = user_id
@@ -170,7 +170,7 @@ def create_board(board_name: str):
     if 'userId' not in session:
         return {
             "result": 'No user logged in',
-            "status": 200
+            "status": 401
         }
         
     # check whether email address is duplicated
@@ -195,7 +195,7 @@ def rename_board(board_name: str, target_name: str):
     if 'userId' not in session:
         return {
             "result": 'No user logged in',
-            "status": 200
+            "status": 401
         }
         
     # check whether the board exists with given name
@@ -227,7 +227,7 @@ def remove_board(board_name: str):
     if 'userId' not in session:
         return {
             "result": 'No user logged in',
-            "status": 200
+            "status": 401
         }
         
     # check whether the board exists with given name
@@ -275,7 +275,7 @@ def create_article(title: str, contents: str, bname: str):
     if 'userId' not in session:
         return {
             "result": 'No user logged in',
-            "status": 200
+            "status": 401
         }
     
     # check whether the board exists with given name
@@ -311,7 +311,7 @@ def edit_article(article_id: int, title: str, contents: str):
     if 'userId' not in session:
         return {
             "result": 'No user logged in',
-            "status": 200
+            "status": 401
         }
     
     # whether the article exists with given article id
@@ -326,7 +326,7 @@ def edit_article(article_id: int, title: str, contents: str):
     if (session['userId'] != writer_id):    # unauthorized
         return {
             "result": 'Unauthorized User.',
-            "status": 200
+            "status": 401
         }
     
     # edit title and contents (PUT)
@@ -370,7 +370,7 @@ def delete_article(article_id: int):
     if 'userId' not in session:
         return {
             "result": 'No user logged in',
-            "status": 200
+            "status": 401
         }
         
     # check whether article exists with given article id
@@ -440,4 +440,3 @@ def recent_articles(rpp: int):
         "result": result,
         "status": 200
     }
-        
