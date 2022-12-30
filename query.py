@@ -326,7 +326,7 @@ def edit_article(article_id: int, title: str, contents: str):
     if (session['userId'] != writer_id):    # unauthorized
         return {
             "result": 'Unauthorized User.',
-            "status": 401
+            "status": 403   # Forbidden
         }
     
     # edit title and contents (PUT)
@@ -385,7 +385,7 @@ def delete_article(article_id: int):
     if (session['userId'] != writer_id):    # unauthorized
         return {
             "result": 'Unauthorized User.',
-            "status": 200
+            "status": 403   # Forbidden
         }
         
     # mark as "deleted"
