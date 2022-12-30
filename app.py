@@ -20,7 +20,7 @@ def home():
     return render_template('layout.html')
 
 
-@app.route('/user/<path:path>', methods = ['POST', 'PATCH'])
+@app.route('/user/<path:path>', methods = ['POST'])
 def user(path):
     if path == 'signup' and request.method == 'POST':
         params = request.get_json()
@@ -29,7 +29,7 @@ def user(path):
         password = params['password']
         return query.signup(name, email, password)
     
-    elif path == 'login' and request.method == 'PATCH':
+    elif path == 'login':
         params = request.get_json()
         email = params['email']
         password = params['password']
