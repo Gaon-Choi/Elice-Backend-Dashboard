@@ -352,13 +352,14 @@ def edit_article(article_id: int, title: str, contents: str):
 
 def read_article(article_id: int):
     # check whether article exists with given article id
-    exist_aid, writer_id = check_exist_article(article_id).fetchone()
-    if (exist_aid is None):
+    result = check_exist_article(article_id).fetchone()
+    if (result is None):
         return {
             "result": 'no article detected with given id',
             "status": 400
         }
     
+    exist_aid, writer_id = result
     query = select(Article.title, Article.texts, Article.date).select_from(Article).where(Article.aid == article_id, Article.status == False)
     title, contents, date = sql_session.execute(query).fetchone()
     
@@ -381,12 +382,14 @@ def delete_article(article_id: int):
         }
         
     # check whether article exists with given article id
-    exist_aid, writer_id = check_exist_article(article_id).fetchone()
-    if (exist_aid is None):
+    result = check_exist_article(article_id).fetchone()
+    if (result is None):
         return {
             "result": 'no article detected with given id',
             "status": 400
         }
+    
+    exist_aid, writer_id = result
     
     # check user's authority for editing article
     if (session['userId'] != writer_id):    # unauthorized
