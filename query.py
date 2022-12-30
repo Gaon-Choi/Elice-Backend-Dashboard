@@ -320,12 +320,14 @@ def edit_article(article_id: int, title: str, contents: str):
         }
     
     # whether the article exists with given article id
-    exist_aid, writer_id = check_exist_article(article_id).fetchone()
-    if (exist_aid is None):
+    result = check_exist_article(article_id).fetchone()
+    if (result is None):
         return {
             "result": 'no article detected with given id',
             "status": 400
         }
+    
+    exist_aid, writer_id = result
     
     # check user's authority for editing article
     if (session['userId'] != writer_id):    # unauthorized
