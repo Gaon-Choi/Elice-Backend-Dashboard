@@ -230,8 +230,9 @@
       }
     ],
     "status": 200
-}
+  }
   ```
+  
 3. 게시판 이름 변경 기능
 - endpoint: `PATCH /board/:board_name HTTP/1.1`
 
