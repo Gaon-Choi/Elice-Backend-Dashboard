@@ -146,7 +146,7 @@
 3. 사용자 로그아웃 기능
 - endpoint: `POST /user/logout HTTP/1.1`
 
-- body: (없음)
+- body: (None)
 
 - response
 
@@ -172,49 +172,93 @@
 
   e.g. `PUT /board/notice`
 
+- body: (None)
+
 2. 게시판 목록 조회 기능
 - endpoint: `GET /boardlist?page={page} HTTP/1.1`
 
   e.g. `GET /boardlist?page=1`
+
+- body: (None)
 
 3. 게시판 이름 변경 기능
 - endpoint: `PATCH /board/:board_name HTTP/1.1`
 
   e.g. `PATCH /board/notice`
 
+- body: { "target_name" }
+
+- request body example
+  ```json
+    {
+      "target_name": "only-for-members"
+    }
+  ```
+
 4. 게시판 제거 기능
 - endpoint: `DELETE /board/:board_name HTTP/1.1`
 
   e.g. `DELETE /board/notice`
+
+- body: (None)
 
 5. 게시판 글 목록 조회 기능
 - endpoint: `GET /board/:board_name?page={page} HTTP/1.1`
 
   e.g. `GET /board/notice?page=2`
 
+- body: (None)
 
 ### Article
 
 1. 게시글 생성 기능
 - endpoint: `POST /article HTTP/1.1`
 
+- body: { "title", "contents", "board_name" }
+
+- request body example
+  ```json
+  {
+    "title": "[NOTICE] For the new users!",
+    "contents": "The best thing about the future is that it comes one day at a time.",
+    "board_name": "notice"
+  }
+  ```
+
 2. 게시글 조회 기능
 - endpoint: `GET /article/:article_id HTTP/1.1`
 
   e.g. `GET /article/23 HTTP/1.1`
 
+- body: (None)
+
 3. 게시글 제목 및 내용 변경 기능
 - endpoint: `PUT /article HTTP/1.1`
+
+- body: { "article_id", "title", "contents" }
+
+- request body example
+  ```json
+  {
+    "article_id": 23,
+    "title": "[NOTICE] For the new users!",
+    "contents": "The best thing about the future is that nobody knows it.",
+  }
+  ```
 
 4. 게시글 제거 기능 (사용자)
 - endpoint: `PATCH /article/:article_id HTTP/1.1`
 
   e.g. `PATCH /article/23 HTTP/1.1`
 
+- body: (None)
+
 5. 게시글 제거 기능 (관리자)
 - endpoint: `DELETE /article/delete/:article_id HTTP/1.1`
 
   e.g. `DELETE /article/23 HTTP/1.1`
+
+- body: (None)
 
 ### Dashboard
 
@@ -224,6 +268,8 @@
   rpp: 한 게시판 별로 조회할 게시글의 개수
 
   e.g. `GET /article/recent/15 HTTP/1.1`
+
+- body: (None)
 
 ## How to Run
 
