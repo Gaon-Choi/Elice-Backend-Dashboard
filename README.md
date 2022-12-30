@@ -214,4 +214,9 @@ pip install -r requirements.txt
 docker-compose up -d
 ```
 
-5. 테스트는 Postman으로 진행하였다. Postman을 실행한 후 API Specification을 참고하여 request를 보내고 response를 확인할 수 있다.
+5. app.py를 실행한다. Docker Desktop에서 "Open in VSCode"를 통해 Visual Studio Code 환경에서 실행할 수도 있다.
+```
+python app.py
+```
+
+6. 테스트는 Postman으로 진행하였다. Postman을 실행한 후 API Specification을 참고하여 request를 보내고 response를 확인할 수 있다.
