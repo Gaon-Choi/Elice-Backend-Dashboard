@@ -14,6 +14,7 @@
 본 프로젝트에서 사용한 테이블 디자인입니다. 컬럼명에 굵은 글씨로 표시된 것은 Primary Key를 나타내며, 밑줄 형태로 표시된 것은 Foreign Key를 나타냅니다.
 
 1. 사용자 테이블 users
+
 |column name|data type|detail|
 |------|---|---|
 |**id**|Integer|사용자 식별 id|
@@ -22,12 +23,14 @@
 |password|Character(80)|사용자 패스워드 (SHA 적용)|
 
 2. 게시판 테이블 boards
+
 |column name|data type|detail|
 |------|---|---|
 |**id**|Integer|게시판 식별 id|
 |name|Character(30)|게시판 이름|
 
 3. 게시글 테이블 articles
+
 |column name|data type|detail|
 |------|---|---|
 |**id**|Integer|게시글 식별 id|
@@ -51,9 +54,9 @@
 - request body example
   ```json
   {
-      "name": "chulsoo",
-      "email": "chulsoo@naver.com",
-      "password": "chl10280"
+      "name": "gaonchoi",
+      "email": "x@gmail.com",
+      "password": "12345678"
   }
   ```
 - response
@@ -78,8 +81,8 @@
   ```json
     {
       "result": {
-        "fullname": user_name,
-        "email": user_email
+        "fullname": "gaonchoi",
+        "email": "x@gmail.com"
       },
       "status": 201
     }
@@ -93,9 +96,9 @@
 - request body example
   ```json
   {
-      "name": "chulsoo",
-      "email": "chulsoo@naver.com",
-      "password": "chl10280"
+      "name": "gaonchoi",
+      "email": "x@gmail.com",
+      "password": "12345678"
   }
   ```
 
@@ -133,8 +136,8 @@
   ```json
   {
     "result": {
-      "userId": user_id,
-      "userEmail": user_email
+      "userId": "gaonchoi",
+      "userEmail": "x@gmail.com"
     },
     "status": 200
   }
@@ -188,3 +191,27 @@
 5. 게시글 제거 기능 (관리자)
 
 ## How to Run
+
+1. 해당 레포지토리를 로컬에 복사한다.
+```
+git clone https://github.com/Gaon-Choi/Elice-Backend-Dashboard.git
+```
+
+2. 레포지토리 내에서 가상 환경을 구성한 후 활성화합니다.
+```
+cd Elice-BackEnd-Dashboard
+python -m venv venv
+venv\Scripts\activate.bat
+```
+
+3. 필요한 패키지를 pip을 통해 설치한다.
+```
+pip install -r requirements.txt
+```
+
+4. Docker 환경에서 컨테이너를 실행한다. Docker Desktop에서 컨테이너를 직접 실행할 수 있다.
+```
+docker-compose up -d
+```
+
+5. 테스트는 Postman으로 진행하였다. Postman을 실행한 후 API Specification을 참고하여 request를 보내고 response를 확인할 수 있다.
