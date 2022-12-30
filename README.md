@@ -49,9 +49,9 @@
 ### User
 
 1. 사용자 가입 기능
-  - endpoint: `POST /user/signup HTTP/1.1`
-  - body: { "name", "email", "password" }
-  - request body example
+- endpoint: `POST /user/signup HTTP/1.1`
+- body: { "name", "email", "password" }
+- request body example
   ```json
   {
       "name": "gaonchoi",
@@ -59,12 +59,12 @@
       "password": "12345678"
   }
   ```
-  - response
+- response
 
   1) 이메일 형식이 잘못된 경우
   ```json
     {
-      "result": "invalid email address",
+      "result": "Invalid email address",
       "status": 400
     }
   ```
@@ -72,7 +72,7 @@
   2) 중복된 이메일로 기가입자가 존재하는 경우
   ```json
     {
-      "result": "duplicate email detected",
+      "result": "Duplicate email detected.",
       "status": 400
     }
   ```
@@ -89,11 +89,11 @@
   ```
 
 2. 사용자 로그인 기능
-  - endpoint: `POST /user/login HTTP/1.1`
+- endpoint: `POST /user/login HTTP/1.1`
 
-  - body: { "email", "password" }
+- body: { "email", "password" }
 
-  - request body example
+- request body example
   ```json
   {
     "email": "x@gmail.com",
@@ -101,7 +101,7 @@
   }
   ```
 
-  - response
+- response
 
   1) 이미 로그인된 경우
   ```json
@@ -114,7 +114,7 @@
   2) 이메일 형식이 잘못된 경우
   ```json
   {
-    "result": "email address has invalid form.",
+    "result": "Email address has invalid form.",
     "status": 400
   }
 
@@ -122,7 +122,7 @@
   3) 가입 정보가 존재하지 않는 경우(이메일 기반)
   ```json
   {
-    "result": "User does not exist with given e-mail address",
+    "result": "User does not exist with given e-mail address.",
     "status": 200
   }
   ```
@@ -147,23 +147,23 @@
   ```
 
 3. 사용자 로그아웃 기능
-  - endpoint: `POST /user/logout HTTP/1.1`
+- endpoint: `POST /user/logout HTTP/1.1`
 
-  - body: (None)
+- body: (None)
 
-  - response
+- response
 
   1) 로그인 상태가 아닌 경우
   ```json
   {
-    "result": "No user logged in",
+    "result": "No user logged in.",
     "status": 401
   }
   ```
   2) 로그아웃이 성공적으로 이뤄진 경우
   ```json
   {
-    "result": "Logged out successfully",
+    "result": "Logged out successfully.",
     "status": 200
   }
   ```
@@ -171,18 +171,18 @@
 ### Board
 
 1. 게시판 추가 기능
-  - endpoint: `PUT /board/:board_name HTTP/1.1`
+- endpoint: `PUT /board/:board_name HTTP/1.1`
 
-    e.g. `PUT /board/notice`
+  e.g. `PUT /board/notice`
 
-  - body: (None)
+- body: (None)
 
-  - response
+- response
 
   1) 로그인 상태가 아닌 경우
   ```json
   {
-    "result": "No user logged in",
+    "result": "No user logged in.",
     "status": 401
   }
   ```
@@ -190,7 +190,7 @@
   2) 게시판 이름이 중복된 경우
   ```json
   {
-    "result": "duplicate board name detected",
+    "result": "Duplicate board name detected.",
     "status": 400
   }
   ```
@@ -206,13 +206,13 @@
   ```
 
 2. 게시판 목록 조회 기능
-  - endpoint: `GET /boardlist?page={page} HTTP/1.1`
+- endpoint: `GET /boardlist?page={page} HTTP/1.1`
 
-    e.g. `GET /boardlist?page=1`
+  e.g. `GET /boardlist?page=1`
 
-  - body: (None)
+- body: (None)
 
-  - response
+- response
   ```json
   {
     "result": [
@@ -233,25 +233,25 @@
 }
   ```
 3. 게시판 이름 변경 기능
-  - endpoint: `PATCH /board/:board_name HTTP/1.1`
+- endpoint: `PATCH /board/:board_name HTTP/1.1`
 
-    e.g. `PATCH /board/notice`
+  e.g. `PATCH /board/notice`
 
-  - body: { "target_name" }
+- body: { "target_name" }
 
-  - request body example
+- request body example
   ```json
   {
     "target_name": "only-for-members"
   }
   ```
 
-  - response
+- response
 
   1) 로그인 상태가 아닌 경우
   ```json
   {
-    "result": "No user logged in",
+    "result": "No user logged in.",
     "status": 401
   }
   ```
@@ -259,7 +259,7 @@
   2) 입력받은 이름의 게시판이 존재하지 않는 경우
   ```json
   {
-    "result": "no board detected with given name",
+    "result": "No board detected with given name.",
     "status": 400
   }
   ```
@@ -267,7 +267,7 @@
   3) 입력받은 게시판 이름이 변경할 이름과 같은 경우
   ```json
   {
-    "result": "target name is the same with present name",
+    "result": "Target name is the same with present name.",
     "status": 400
   }
   ```
@@ -284,13 +284,13 @@
   ```
 
 4. 게시판 제거 기능
-  - endpoint: `DELETE /board/:board_name HTTP/1.1`
+- endpoint: `DELETE /board/:board_name HTTP/1.1`
 
-    e.g. `DELETE /board/notice`
+  e.g. `DELETE /board/notice`
 
-  - body: (None)
+- body: (None)
 
-  - response
+- response
 
   1) 로그인 상태가 아닌 경우
   ```json
@@ -303,7 +303,7 @@
   2) 입력받은 이름의 게시판이 존재하지 않는 경우
   ```json
   {
-    "result": "no board detected with given name",
+    "result": "No board detected with given name.",
     "status": 400
   }
   ```
@@ -320,15 +320,256 @@
 
 5. 게시판 글 목록 조회 기능
 
-  게시판의 id를 key로 하고, 각 게시판에 소속된 게시글의 제목을 리스트 형태로 반환한다.
+- endpoint: `GET /board/:board_name?page={page} HTTP/1.1`
 
-  - endpoint: `GET /board/:board_name?page={page} HTTP/1.1`
+  e.g. `GET /board/notice?page=2`
 
-    e.g. `GET /board/notice?page=2`
+- body: (None)
 
-  - body: (None)
+- response
+  ```json
+  {
+    "result": [
+      {
+        "id": 1,
+        "title": "badbadbad",
+        "contents": "I am Gaon Choi. A Software Developer!!!"
+      },
+      {
+        "id": 2,
+        "title": "good2",
+        "contents": "I am Gaon Choi. A Software Developer"
+      },
+      {
+        "id": 3,
+        "title": "badbadbad",
+        "contents": "I am Gaon Choi. A Software Developer!!!"
+      },
+      {
+        "id": 4,
+        "title": "good34",
+        "contents": "I am Gaon Choi. A Software Developer"
+      },
+      {
+        "id": 5,
+        "title": "[Intro] Who is gaon Choi?",
+        "contents": "I am Gaon Choi. A Software Developer"
+      },
+      {
+        "id": 6,
+        "title": "What is 2023?",
+        "contents": "Tomorrow, 2023 starts!! Good to see you, 2022."
+      }
+    ],
+    "status": 200
+  }
+  ```
 
-  - response
+
+### Article
+
+1. 게시글 생성 기능
+- endpoint: `POST /article HTTP/1.1`
+
+- body: { "title", "contents", "board_name" }
+
+- request body example
+  ```json
+  {
+    "title": "[NOTICE] For the new users!",
+    "contents": "The best thing about the future is that it comes one day at a time.",
+    "board_name": "notice"
+  }
+  ```
+
+- response
+
+  1) 입력받은 id에 해당하는 게시글이 존재하지 않는 경우
+  ```json
+  {
+    "result": "No article detected with given id.",
+    "status": 400
+  }
+  ```
+
+  2) 게시글 등록에 성공한 경우
+  ```json
+  {
+    "result": {
+      "title": "[Intro] Who is gaon Choi?",
+      "contents": "I am Gaon Choi. A Software Developer"
+    },
+    "status": 201
+  }
+  ```
+
+2. 게시글 조회 기능
+- endpoint: `GET /article/:article_id HTTP/1.1`
+
+  e.g. `GET /article/23 HTTP/1.1`
+
+- body: (None)
+
+- response
+
+  1) 입력받은 id에 해당하는 게시글이 존재하지 않는 경우
+  ```json
+  {
+    "result": "No article detected with given id.",
+    "status": 400
+  }
+  ```
+
+  2) 게시글 조회에 성공한 경우
+  ```json
+  {
+    "result": {
+      "title": "[Intro] Who is Gaon Choi?",
+      "contents": "I am Gaon Choi. A Software Developer!!!",
+      "date": "2022-12-29 13:44:04.711515+00:00"
+    },
+    "status": 200
+  }
+  ```
+
+3. 게시글 제목 및 내용 변경 기능
+- endpoint: `PUT /article HTTP/1.1`
+
+- body: { "article_id", "title", "contents" }
+
+- request body example
+  ```json
+  {
+    "article_id": 23,
+    "title": "[NOTICE] For the new users!",
+    "contents": "The best thing about the future is that nobody knows it.",
+  }
+  ```
+
+- response
+
+  1) 로그인 상태가 아닌 경우
+  ```json
+  {
+    "result": "No user logged in.",
+    "status": 401
+  }
+  ```
+
+  2) 입력받은 id에 해당하는 게시글이 존재하지 않는 경우
+  ```json
+  {
+    "result": "No article detected with given id.",
+    "status": 400
+  }
+  ```
+
+  3) 게시글이 존재하고, 로그인 상태이나 해당 유저가 작성한 게시글이 아닌 경우
+  ```json
+  {
+    "result": "Unauthorized User.",
+    "status": 403
+  }
+  ```
+
+  4) 모든 접근권한 조건을 만족하여 게시글 수정이 완료된 경우
+  ```json
+  {
+    "result": {
+      "title": "What is 2023?",
+      "contents": "Tomorrow, 2023 starts!! Good to see you, 2022."
+    },
+    "status": 200
+  }
+  ```
+
+4. 게시글 제거 기능 (사용자)
+- endpoint: `PATCH /article/:article_id HTTP/1.1`
+
+  e.g. `PATCH /article/23 HTTP/1.1`
+
+- body: (None)
+
+- response
+
+  1) 로그인 상태가 아닌 경우
+  ```json
+  {
+    "result": "No user logged in.",
+    "status": 401
+  }
+  ```
+
+  2) 입력받은 id에 해당하는 게시글이 존재하지 않는 경우
+  ```json
+  {
+    "result": "No article detected with given id.",
+    "status": 400
+  }
+  ```
+
+  3) 게시글이 존재하고, 로그인 상태이나 해당 유저가 작성한 게시글이 아닌 경우
+  ```json
+  {
+    "result": "Unauthorized User.",
+    "status": 403
+  }
+  ```
+
+  4) 모든 접근권한 조건을 만족하여 게시글 삭제가 완료된 경우 (DB상에는 존재)
+  ```json
+  {
+    "result": {
+        "article_id": "6"
+    },
+    "status": 200
+  }
+  ```
+
+
+5. 게시글 제거 기능 (관리자)
+- endpoint: `DELETE /article/delete/:article_id HTTP/1.1`
+
+  e.g. `DELETE /article/23 HTTP/1.1`
+
+- body: (None)
+
+- response
+
+  1) 입력받은 id에 해당하는 게시글이 존재하지 않는 경우
+  ```json
+  {
+    "result": "No article detected with given id.",
+    "status": 400
+  }
+  ```
+
+  2) 게시글 삭제가 완료된 경우
+  ```json
+  {
+    "result": {
+        "article_id": "6"
+    },
+    "status": 200
+  }
+  ```
+
+
+### Dashboard
+
+1. 최근 게시글 조회
+
+게시판의 id를 key로 하고, 각 게시판에 소속된 게시글의 제목을 리스트 형태로 반환한다.
+
+- endpoint: `GET /article/recent/:rpp HTTP/1.1`
+
+  rpp: 한 게시판 별로 조회할 게시글의 개수
+
+  e.g. `GET /article/recent/5 HTTP/1.1`
+
+- body: (None)
+
+- response
   ```json
   {
     "result": {
@@ -347,82 +588,9 @@
       ]
     },
     "status": 200
-}
-  ```
-  
-### Article
-
-1. 게시글 생성 기능
-  - endpoint: `POST /article HTTP/1.1`
-
-  - body: { "title", "contents", "board_name" }
-
-  - request body example
-  ```json
-  {
-    "title": "[NOTICE] For the new users!",
-    "contents": "The best thing about the future is that it comes one day at a time.",
-    "board_name": "notice"
   }
   ```
 
-  - response
-
-2. 게시글 조회 기능
-  - endpoint: `GET /article/:article_id HTTP/1.1`
-
-    e.g. `GET /article/23 HTTP/1.1`
-
-  - body: (None)
-
-  - response
-
-3. 게시글 제목 및 내용 변경 기능
-  - endpoint: `PUT /article HTTP/1.1`
-
-  - body: { "article_id", "title", "contents" }
-
-  - request body example
-  ```json
-  {
-    "article_id": 23,
-    "title": "[NOTICE] For the new users!",
-    "contents": "The best thing about the future is that nobody knows it.",
-  }
-  ```
-
-- response
-
-4. 게시글 제거 기능 (사용자)
-  - endpoint: `PATCH /article/:article_id HTTP/1.1`
-
-    e.g. `PATCH /article/23 HTTP/1.1`
-
-  - body: (None)
-
-  - response
-
-5. 게시글 제거 기능 (관리자)
-  - endpoint: `DELETE /article/delete/:article_id HTTP/1.1`
-
-    e.g. `DELETE /article/23 HTTP/1.1`
-
-  - body: (None)
-
-  - response
-
-### Dashboard
-
-1. 최근 게시글 조회
-  - endpoint: `GET /article/recent/:rpp HTTP/1.1`
-
-    rpp: 한 게시판 별로 조회할 게시글의 개수
-
-    e.g. `GET /article/recent/15 HTTP/1.1`
-
-  - body: (None)
-
-  - response
 
 ## How to Run
 
