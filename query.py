@@ -115,6 +115,8 @@ def login(email: str, password: str):
     # account exists
     [user_id, user_email, user_password] = result
 
+    password = hashlib.sha256(password.encode()).hexdigest()
+    
     if (user_password != password):
         return {
             "result": "Wrong password!",
