@@ -270,7 +270,7 @@ def read_articles(board_name: str, page: int):
     
     [ exist_bid ] = exist_bid
     
-    query = select(Article.aid, Article.title, Article.texts).select_from(Article).where(Article.bid == exist_bid).order_by(Article.aid).offset(page * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
+    query = select(Article.aid, Article.title, Article.texts).select_from(Article).where(Article.bid == exist_bid, Article.status == False).order_by(Article.aid).offset(page * RECORDS_PER_PAGE).limit(RECORDS_PER_PAGE)
     result = sql_session.execute(query).fetchall()
     result = organize_articles(result)
     
