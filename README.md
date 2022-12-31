@@ -34,10 +34,10 @@
 |column name|data type|detail|
 |------|---|---|
 |**id**|Integer|게시글 식별 id|
-|<U>board_id</U>|Integer|소속 게시판 id: boards.id|
+|<ins>board_id</ins>|Integer|소속 게시판 id: boards.id|
 |title|Character(100)|게시글 제목|
 |contents|Text|게시글 내용|
-|<U>writer</U>|Integer|작성 유저 id: users.id|
+|<ins>writer</ins>|Integer|작성 유저 id: users.id|
 |date|Timestamp with time zone|게시글 생성일|
 |edate|Timestamp with time zone|게시글 수정일 (최신)|
 |status|Boolean|게시글 삭제 여부|
@@ -232,7 +232,7 @@
     "status": 200
   }
   ```
-  
+
 3. 게시판 이름 변경 기능
 - endpoint: `PATCH /board/:board_name HTTP/1.1`
 
